@@ -1,11 +1,14 @@
 import { IState } from ".";
+import { IMeal, IState as IMealState} from "./meals";
 
 interface ISelectors {
-  getCreateForm: (state: IState) => IState['meals']['form'],
-  getMealList: (state: IState) => IState['meals']['meals'],
+  getMealList: (state: IState) => IMeal[]
+  getMeals: (state: IState) => IMealState['meals']
 }
 
 export const selectors: ISelectors = {
-  getCreateForm: state => state.meals.form,
-  getMealList: state => state.meals.meals,
+  getMealList: state => Object.keys(state.meals.meals).map(name => {
+    return state.meals.meals[name];
+  }),
+  getMeals: state => state.meals.meals,
 };

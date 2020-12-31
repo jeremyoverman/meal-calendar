@@ -7,18 +7,26 @@ import {
   reducer as mealsReducer,
   IState as IMealsState,
 } from "./meals";
+import {
+  actions as ingredientsActions,
+  reducer as ingredientsReducer,
+  IState as IIngredientsState,
+} from "./ingredients";
 import { loadState, saveState } from "./util";
 
 export const actions = {
   meals: mealsActions,
+  ingredients: ingredientsActions,
 }
 
 export interface IState {
   meals: IMealsState,
+  ingredients: IIngredientsState,
 };
 
 const reducer = combineReducers({
-  meals: mealsReducer
+  meals: mealsReducer,
+  ingredients: ingredientsReducer,
 });
 
 export default async () => {

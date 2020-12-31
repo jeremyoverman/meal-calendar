@@ -1,5 +1,6 @@
 import { createReducer } from 'deox';
 import { createSimpleActionCreator } from './util';
+import { v4 as uuidv4 } from 'uuid';
 
 //
 // State
@@ -13,21 +14,25 @@ export interface IMeal {
   name: string,
   numOfDays?: number,
   recipe?: IRecipe,
+  ingredients: string[],
 };
 
 export interface IState {
-  meals: IMeal[],
+  meals: Record<string, IMeal>
 };
 
 export const defaultState: IState = {
-  meals: [],
+  meals: {},
 };
 
 //
 // Actions
 //
 export interface IPayloads {
-  SAVE_MEAL: IMeal,
+  SAVE_MEAL: {
+    id?: string,
+    meal: IMeal,
+  }
   REMOVE_MEAL: string,
 };
 
@@ -39,19 +44,17 @@ export const actions = {
 export const reducer = createReducer(defaultState, handleAction => [
   handleAction(actions.saveMeal, (state, { payload }) => ({
     ...state,
-    meals: [
+    meals: {
       ...state.meals,
-      payload
-    ]
+      [payload.id ? payload.id : uuidv4()]: payload.meal
+    }
   })),
   handleAction(actions.removeMeal, (state, { payload }) => {
-    const mealPredicate = (meal: IMeal) => meal.name === payload;
+    const { [payload]: value, ...result } = state.meals;
+
     return {
       ...state,
-      meals: [
-        ...state.meals.slice(0, state.meals.findIndex(mealPredicate)),
-        ...state.meals.slice(state.meals.findIndex(mealPredicate) + 1)
-      ]
+      meals: { ...result }
     }
   })
 ]);

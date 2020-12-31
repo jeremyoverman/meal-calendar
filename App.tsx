@@ -1,15 +1,13 @@
+import 'react-native-get-random-values';
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as ReduxProvier } from 'react-redux';
-import * as Font from 'expo-font';
 
 import useCachedResources from './hooks/useCachedResources';
 import Navigation from './navigation';
-import createStore from './store';
-import { Container, StyleProvider } from 'native-base';
-import { Ionicons } from '@expo/vector-icons';
+import { Container, Root, StyleProvider } from 'native-base';
 
 if(__DEV__) {
   // @ts-ignore
@@ -20,33 +18,10 @@ if(__DEV__) {
 import getTheme from './native-base-theme/components';
 // @ts-ignore
 import material from './native-base-theme/variables/material';
-import { Store } from 'redux';
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 export default function App() {
-  const isCacheLoadingComplete = useCachedResources();
-  const [isFontLoadingComplete, setFontLoadingComplete] = useState(false);
-  const [store, setStore] = useState<Store>();
-
-  const isLoadingComplete = isCacheLoadingComplete && isFontLoadingComplete;
-
-  useEffect(() => {
-    async function loadStore() {
-      setStore(await createStore());
-    };
-
-    async function loadFonts() {
-      await Font.loadAsync({
-        Roboto: require('native-base/Fonts/Roboto.ttf'),
-        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-        ...Ionicons.font,
-      });
-
-      setFontLoadingComplete(true);
-    };
-
-    loadFonts();
-    loadStore();
-  }, [])
+  const { isLoadingComplete, store } = useCachedResources();
 
   if (!isLoadingComplete || !store) {
     return null;
@@ -55,10 +30,14 @@ export default function App() {
       <SafeAreaProvider>
         <ReduxProvier store={store}>
           <StyleProvider style={getTheme(material)}>
-            <Container>
-              <StatusBar />
-              <Navigation colorScheme="light" />
-            </Container>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Root>
+              <Container>
+                <StatusBar />
+                <Navigation colorScheme="light" />
+              </Container>
+            </Root>
+            </TouchableWithoutFeedback>
           </StyleProvider>
         </ReduxProvier>
       </SafeAreaProvider>

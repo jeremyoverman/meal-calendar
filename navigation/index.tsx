@@ -3,6 +3,7 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createStackNavigator, } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
+import EditIngredientsScreen from '../screens/EditIngredients/EditIngredientsScreen';
 import EditMealScrene from '../screens/EditMealScrene/EditMealScrene';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -14,7 +15,10 @@ export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
   EditMeal?: {
-    name: string,
+    id: string,
+  };
+  EditIngredients: {
+    ingredients: string[],
   };
 };
 
@@ -35,6 +39,14 @@ function RootNavigator() {
         component={EditMealScrene}
         options={{
           title: 'Create a Meal',
+          header: props => <AppHeader {...props} />
+        }}
+      />
+      <Stack.Screen
+        name="EditIngredients"
+        component={EditIngredientsScreen}
+        options={{
+          title: 'Edit Ingredients',
           header: props => <AppHeader {...props} />
         }}
       />

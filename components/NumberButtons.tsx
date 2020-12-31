@@ -39,9 +39,11 @@ export default ({
 
 const style = StyleSheet.create({
   container: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    padding: 4
+    paddingTop: 12,
+    paddingBottom: 12,
   },
   button: {
     flexGrow: 0,

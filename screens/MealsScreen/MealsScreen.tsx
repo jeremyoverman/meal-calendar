@@ -7,8 +7,8 @@ import { selectors } from '../../store/selectors';
 import { Body, Button, Content, Icon, Left, List, ListItem, Right, StyleProvider, Text } from 'native-base';
 import { StackScreenProps } from '@react-navigation/stack';
 import { actions } from '../../store';
-import { RootStackParamList } from '../../navigation';
 import { MealsStackParamList } from './MealsNav';
+import ListInput from '../../components/ListInput';
 
 type IProps = {
   
@@ -16,19 +16,10 @@ type IProps = {
 
 export default ({ navigation }: IProps) => {
   const dispatch = useDispatch();
-  const [isEditing, setIsEditing ] = React.useState(false);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => [(
-        <Button
-          transparent
-          key="edit"
-          onPress={() => setIsEditing(!isEditing)}
-        >
-          <Icon name={isEditing ? 'pencil-outline' : 'pencil'} type="MaterialCommunityIcons" />
-        </Button>
-      ), (
         <Button
           transparent
           key="create"
@@ -40,42 +31,18 @@ export default ({ navigation }: IProps) => {
     })
   });
 
-  const meals = useSelector(selectors.getMealList);
+  const meals = useSelector(selectors.getMeals);
 
   return (
     <View style={style.container}>
-      <Content>
-        <List>
-          {meals.map(meal => (
-            <ListItem
-              key={meal.name}
-              onPress={() => navigation.navigate('EditMeal', {
-                name: meal.name,
-              })}
-            >
-              <Body style={style.item}>
-                {isEditing ? (
-                  <Button
-                    transparent
-                    onPress={() => dispatch(actions.meals.removeMeal(meal.name))}
-                    style={style.removeButton}
-                  >
-                    <Icon
-                      name="circle-with-minus"
-                      type="Entypo"
-                      style={style.removeButtonIcon}
-                    />
-                  </Button>
-                ) : null}
-                <Text>{meal.name}</Text>
-              </Body>
-              <Right>
-                <Icon name="arrowright" type="AntDesign"/>
-              </Right>
-            </ListItem>
-          ))}
-        </List>
-      </Content>
+      <ListInput
+        value={Object.keys(meals).map(id => ({
+          id,
+          value: meals[id].name,
+        }))}
+        onDelete={id => dispatch(actions.meals.removeMeal(id))}
+        onPress={id => navigation.navigate('EditMeal', { id })}
+      />
     </View>
   );
 };
@@ -87,7 +54,8 @@ const style = StyleSheet.create({
   item: {
     display: 'flex',
     flexDirection: 'row',
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
+    marginLeft: 0
   },
   removeButton: {
     marginTop: 8,
@@ -95,5 +63,9 @@ const style = StyleSheet.create({
   },
   removeButtonIcon: {
     color: 'red',
+  },
+  content: {
+    marginLeft: 0,
+    paddingLeft: 0
   }
 });
