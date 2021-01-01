@@ -66,7 +66,7 @@ export default ({ navigation, route }: IProps) => {
       })
     } else {
       dispatch(actions.meals.saveMeal({ id, meal }));
-      navigation.navigate('Meals');
+      navigation.goBack();
     }
   }
 

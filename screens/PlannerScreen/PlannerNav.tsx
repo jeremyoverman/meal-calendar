@@ -3,10 +3,11 @@ import * as React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import AppHeader from "../../navigation/AppHeader";
 import PlannerScreen from "./PlannerScreen";
+import { RootStackParamList } from '../../navigation';
 
-type PlannerParamList = {
+export type PlannerParamList = {
   PlannerScreen: undefined;
-};
+} & RootStackParamList;
 
 const PlannerStack = createStackNavigator<PlannerParamList>();
 

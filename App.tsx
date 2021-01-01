@@ -18,7 +18,12 @@ if(__DEV__) {
 import getTheme from './native-base-theme/components';
 // @ts-ignore
 import material from './native-base-theme/variables/material';
-import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 export default function App() {
   const { isLoadingComplete, store } = useCachedResources();
@@ -30,14 +35,10 @@ export default function App() {
       <SafeAreaProvider>
         <ReduxProvier store={store}>
           <StyleProvider style={getTheme(material)}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Root>
-              <Container>
-                <StatusBar />
-                <Navigation colorScheme="light" />
-              </Container>
+              <StatusBar />
+              <Navigation colorScheme="light" />
             </Root>
-            </TouchableWithoutFeedback>
           </StyleProvider>
         </ReduxProvier>
       </SafeAreaProvider>

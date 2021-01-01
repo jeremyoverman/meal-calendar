@@ -12,7 +12,7 @@ type Value = {
 type IProps = {
   value: Value[],
   onAdd?: (value: string) => any,
-  onDelete: (value: string) => any,
+  onDelete?: (value: string) => any,
   onPress?: (value: string) => any,
 };
 
@@ -80,13 +80,13 @@ export default ({
             return listItem;
           }
         }}
-        renderHiddenItem={data => (
+        renderHiddenItem={onDelete ? data => (
           <View style={style.rowBack}>
             <TouchableOpacity style={style.deleteButton} onPress={() => onDelete(data.item.key)}>
               <Icon style={style.deleteIcon} name="trash-can-outline" type="MaterialCommunityIcons" />
             </TouchableOpacity>
           </View>
-        )}
+        ) : undefined}
         ListFooterComponent={onAdd && (
           <Item>
             <Input

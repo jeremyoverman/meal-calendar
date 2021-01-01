@@ -7,6 +7,7 @@ import EditIngredientsScreen from '../screens/EditIngredients/EditIngredientsScr
 import EditMealScrene from '../screens/EditMealScrene/EditMealScrene';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
+import SelectMealScreen from '../screens/SelectMealScreen/SelectMealScreen';
 import AppHeader from './AppHeader';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -16,10 +17,14 @@ export type RootStackParamList = {
   NotFound: undefined;
   EditMeal?: {
     id: string,
-  };
+  },
   EditIngredients: {
     ingredients: string[],
-  };
+  },
+  SelectMeal: {
+    date: Date,
+    onSelect: (id: string, date: Date) => any,
+  },
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -47,6 +52,14 @@ function RootNavigator() {
         component={EditIngredientsScreen}
         options={{
           title: 'Edit Ingredients',
+          header: props => <AppHeader {...props} />
+        }}
+      />
+      <Stack.Screen
+        name="SelectMeal"
+        component={SelectMealScreen}
+        options={{
+          title: 'Add Meal',
           header: props => <AppHeader {...props} />
         }}
       />
