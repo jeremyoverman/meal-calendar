@@ -27,13 +27,15 @@ export const defaultState: IState = {
 // Actions
 //
 export interface IPayloads {
-  ADD_MEAL: { date: Date, period: keyof IDay, meal: string }
-  REMOVE_MEAL: { period: keyof IDay, date: Date }
+  'PLANS/ADD_MEAL': { date: Date, period: keyof IDay, meal: string }
+  'PLANS/REMOVE_MEAL': { period: keyof IDay, date: Date }
+  'PLANS/REMOVE_MEALS_WITH_ID': string,
 };
 
 export const actions = {
-  addMeal: createSimpleActionCreator<IPayloads, 'ADD_MEAL'>('ADD_MEAL'),
-  removeMeal: createSimpleActionCreator<IPayloads, 'REMOVE_MEAL'>('REMOVE_MEAL'),
+  addMeal: createSimpleActionCreator<IPayloads, 'PLANS/ADD_MEAL'>('PLANS/ADD_MEAL'),
+  removeMeal: createSimpleActionCreator<IPayloads, 'PLANS/REMOVE_MEAL'>('PLANS/REMOVE_MEAL'),
+  removeMealsWithId: createSimpleActionCreator<IPayloads, 'PLANS/REMOVE_MEALS_WITH_ID'>('PLANS/REMOVE_MEALS_WITH_ID'),
 };
 
 export const reducer = createReducer(defaultState, handleAction => [
@@ -73,5 +75,30 @@ export const reducer = createReducer(defaultState, handleAction => [
         }
       }
     }
+  }),
+  handleAction(actions.removeMealsWithId, (state, { payload }) => {
+    const plan: IPlan = {};
+
+    for (let date in state.plan) {
+      const day = { ...state.plan[date] };
+
+      const removeMeal = (period: keyof IDay, id: string): IDay => {
+        if (day[period] === id) {
+          const { [period]: value, ...withoutMeal } = day;
+          return withoutMeal;
+        }
+
+        return { ...day };
+      }
+
+      plan[date] = {
+        breakfast: removeMeal('breakfast', payload).breakfast,
+        lunch: removeMeal('lunch', payload).lunch,
+        dinner: removeMeal('dinner', payload).dinner,
+      };
+    }
+
+    return { ...state, plan: plan }
+    // return { ...state }
   }),
 ]);

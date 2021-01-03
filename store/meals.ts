@@ -29,16 +29,16 @@ export const defaultState: IState = {
 // Actions
 //
 export interface IPayloads {
-  SAVE_MEAL: {
+  'MEALS/SAVE_MEAL': {
     id?: string,
     meal: IMeal,
   }
-  REMOVE_MEAL: string,
+  'MEALS/REMOVE_MEAL': string,
 };
 
 export const actions = {
-  saveMeal: createSimpleActionCreator<IPayloads, 'SAVE_MEAL'>('SAVE_MEAL'),
-  removeMeal: createSimpleActionCreator<IPayloads, 'REMOVE_MEAL'>('REMOVE_MEAL'),
+  saveMeal: createSimpleActionCreator<IPayloads, 'MEALS/SAVE_MEAL'>('MEALS/SAVE_MEAL'),
+  removeMeal: createSimpleActionCreator<IPayloads, 'MEALS/REMOVE_MEAL'>('MEALS/REMOVE_MEAL'),
 };
 
 export const reducer = createReducer(defaultState, handleAction => [

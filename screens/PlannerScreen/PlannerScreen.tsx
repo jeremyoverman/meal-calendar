@@ -243,8 +243,6 @@ export default ({ navigation }: IProps) => {
     column: buildPeriod('dinner'),
   }];
 
-  console.log(calendarShowing)
-
   return (
     <View style={styles.container}>
       {dateButtonsShowing ? (

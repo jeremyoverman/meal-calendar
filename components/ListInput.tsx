@@ -38,7 +38,6 @@ export default ({
         swipeGestureBegan={() => setIsSwiping(true)}
         swipeGestureEnded={() => setIsSwiping(false)}
         useFlatList={false}
-        style={style.list}
         disableRightSwipe
         data={value.map((v, i) => ({
           key: typeof v === 'string' ? v : v.id,
@@ -108,10 +107,6 @@ export default ({
 }
 
 const style = StyleSheet.create({
-  list: {
-    paddingTop: 8,
-    paddingBottom: 8,
-  },
   rowFront: {
     borderColor: '#e0e0e0',
     borderBottomWidth: 1,
@@ -134,8 +129,8 @@ const style = StyleSheet.create({
     top: 14,
   },
   container: {
+    height: '100%',
     width: '100%',
-    paddingTop: 8,
     flex: 1,
   },
   rowBack: {

@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectors } from '../../store/selectors';
-import { Body, Button, Content, Icon, Left, List, ListItem, Right, StyleProvider, Text } from 'native-base';
+import { Button, Icon } from 'native-base';
 import { StackScreenProps } from '@react-navigation/stack';
 import { actions } from '../../store';
 import { MealsStackParamList } from './MealsNav';
@@ -33,6 +33,11 @@ export default ({ navigation }: IProps) => {
 
   const meals = useSelector(selectors.getMeals);
 
+  const removeMeal = (id: string) => {
+    dispatch(actions.plans.removeMealsWithId(id));
+    dispatch(actions.meals.removeMeal(id));
+  }
+
   return (
     <View style={style.container}>
       <ListInput
@@ -40,7 +45,7 @@ export default ({ navigation }: IProps) => {
           id,
           value: meals[id].name,
         }))}
-        onDelete={id => dispatch(actions.meals.removeMeal(id))}
+        onDelete={removeMeal}
         onPress={id => navigation.navigate('EditMeal', { id })}
       />
     </View>
@@ -50,22 +55,5 @@ export default ({ navigation }: IProps) => {
 const style = StyleSheet.create({
   container: {
     height: '100%',
-  },
-  item: {
-    display: 'flex',
-    flexDirection: 'row',
-    textAlignVertical: 'center',
-    marginLeft: 0
-  },
-  removeButton: {
-    marginTop: 8,
-    height: 1
-  },
-  removeButtonIcon: {
-    color: 'red',
-  },
-  content: {
-    marginLeft: 0,
-    paddingLeft: 0
   }
 });
